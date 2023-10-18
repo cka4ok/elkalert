@@ -4,7 +4,7 @@ from time import sleep
 
 class SendEmails:
     def __init__(self, sender, server, port=25, tls=False, 
-                 user=None, password=None, timeout=None, email_groups=None):
+                 user=None, password=None, timeout=None, recipient_groups=None):
         self.sender = sender
         self.server = server
         self.port = port
@@ -12,15 +12,15 @@ class SendEmails:
         self.user = user
         self.password = password
         self.timeout = timeout
-        self.email_groups = email_groups
+        self.recipient_groups = recipient_groups
 
     def __extract_email_groups(self, raw_to):
         to = []
         for item in raw_to:
             if "@" in item:
                 to.append(item)
-            elif item in self.email_groups:
-                to.extend(self.email_groups[item])
+            elif item in self.recipient_groups:
+                to.extend(self.recipient_groups[item])
         return list(set(to))
     
    
@@ -52,7 +52,7 @@ class SendEmails:
             print(msg)
         srv_connect.send_message(msg)
     
-    def send_messages(self, alerts):
+    def send_messages(self, alerts, verbose=False):
         messages = self.__extract_messages(alerts)
         if messages:
             srv_connect = smtplib.SMTP(self.server, self.port)
@@ -62,7 +62,7 @@ class SendEmails:
                 srv_connect.login(self.user, self.password)
 
             for msg in messages:
-                self.__send_message(srv_connect, **msg)
+                self.__send_message(srv_connect, **msg, verbose=verbose)
                 if self.timeout: sleep(self.timeout)
 
             srv_connect.quit()

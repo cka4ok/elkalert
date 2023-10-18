@@ -20,12 +20,13 @@ class GetElastAlerts:
             "bool": {
                 "filter":
                 [
-                    {"range": { "timestamp": { 
+                    {"range": { "@timestamp": { 
                         "gte": time_start.strftime('%Y-%m-%dT%H:%M:%S'), 
                         "lte": time_end.strftime('%Y-%m-%dT%H:%M:%S') } } }
                 ]
             }
         }
+        print(query)
         return es_connect.search(index=index, body = {'size':size, 'query':query})['hits']['hits']
     
     def get_elastic_connect(self):
