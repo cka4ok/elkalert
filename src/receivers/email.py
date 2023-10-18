@@ -42,12 +42,14 @@ class SendEmails:
                 messages.append({"to": msg_to, "subject": msg_subject, "body": msg_body})
         return messages
 
-    def __send_message(self, srv_connect, to, subject, body):
+    def __send_message(self, srv_connect, to, subject, body, verbose=False):
         msg = EmailMessage()
         msg.set_content(body)
         msg['subject'] = subject
         msg['to'] = ", ".join(self.__extract_email_groups(to))
         msg['from'] = self.sender
+        if verbose:
+            print(msg)
         srv_connect.send_message(msg)
     
     def send_messages(self, alerts):
