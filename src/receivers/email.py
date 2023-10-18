@@ -1,6 +1,6 @@
 import smtplib
 from email.message import EmailMessage
-import time import sleep
+from time import sleep
 
 class SendEmails:
     def __init__(self, sender, server, port=25, tls=False, 
