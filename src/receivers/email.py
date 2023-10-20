@@ -27,15 +27,17 @@ class SendEmails:
     def __extract_messages(self, alerts):
         messages = []
         for alert in alerts:
-            if ("email" in alert["elkalert"]) and alert["elkalert"]["to"]:
-                msg_to = alert["elkalert"]["to"]
-                if (alert["elkalert"]["subject"] or alert["elkalert"]["subject"] != "auto"):
-                    msg_subject = alert["elkalert"]["subject"]
+            alert = alert["_source"]
+            if "email" in alert["elkalert"] and alert["elkalert"]["email"]["to"]:
+                email = alert["elkalert"]["email"]
+                msg_to = email["to"]
+                if email["subject"] and email["subject"] != "auto":
+                    msg_subject = email["subject"]
                 else:
                     msg_subject = alert["rule"]["name"]
 
-                if alert["elkalert"]["body"] or alert["elkalert"]["body"] != "auto":
-                    msg_body = alert["elkalert"]["body"] 
+                if email["body"] and email["body"] != "auto":
+                    msg_body = email["body"] 
                 else:
                     msg_body = alert["message"] if "message" in alert else ""
                 
@@ -51,18 +53,21 @@ class SendEmails:
         if verbose:
             print(msg)
         srv_connect.send_message(msg)
+
     
     def send_messages(self, alerts, verbose=False):
         messages = self.__extract_messages(alerts)
         if messages:
-            srv_connect = smtplib.SMTP(self.server, self.port)
-            if self.tls:
-                srv_connect.starttls()
-            if self.user:
-                srv_connect.login(self.user, self.password)
+            try:
+                srv_connect = smtplib.SMTP(self.server, self.port)
+                if self.tls:
+                    srv_connect.starttls()
+                if self.user:
+                    srv_connect.login(self.user, self.password)
 
-            for msg in messages:
-                self.__send_message(srv_connect, **msg, verbose=verbose)
-                if self.timeout: sleep(self.timeout)
-
-            srv_connect.quit()
+                for msg in messages:
+                    self.__send_message(srv_connect, **msg, verbose=verbose)
+                    if self.timeout: sleep(self.timeout)
+                srv_connect.quit()
+            except Exception as error:
+                print(error)

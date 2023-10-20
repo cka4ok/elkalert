@@ -5,15 +5,15 @@ from receivers.email import SendEmails
 
 
 if __name__ == "__main__":
-    print(CONFIG)
+    # print(CONFIG)
     elast_alerts = GetElastAlerts(**CONFIG["elasticsearch"])
     send_emails = SendEmails(**CONFIG["email"])
 
     while True:
         alerts = elast_alerts.get_elastic_alerts()
-        print(alerts)
+        # print(alerts)
         send_emails.send_messages(alerts, verbose=True)
-        sleep(20)
+        sleep(CONFIG["global"]["alert_check_interval"])
 
 
 

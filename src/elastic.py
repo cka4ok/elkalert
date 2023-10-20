@@ -26,7 +26,6 @@ class GetElastAlerts:
                 ]
             }
         }
-        print(query)
         return es_connect.search(index=index, body = {'size':size, 'query':query})['hits']['hits']
     
     def get_elastic_connect(self):
