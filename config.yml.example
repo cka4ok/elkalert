@@ -6,7 +6,7 @@ elasticsearch:
   protocol: https  #http or https
   ca_certs: private/elasticsearch-ca.pem
   username: elkalert_bot
-  password: 
+  password: changeme
   index: kibana-alert-history-elkalert
 
 email:
