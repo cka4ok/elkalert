@@ -1,0 +1,18 @@
+global:
+  alert_check_interval: 120  # in seconds
+
+elasticsearch:
+  hosts: ["elasticsearch:9200"]  # or ["192.168.3.10:9200","192.168.3.11:9200"], do not specify a prefix http:// and https://
+  protocol: https  #http or https
+  ca_certs: private/elasticsearch-ca.pem
+  username: elkalert_bot
+  password: changeme
+  index: kibana-alert-history-elkalert
+
+email:
+  sender: elkalert_bot@example.com
+  server: smtp.example.com  #ip or fqdn smtp server
+  port: 25
+  recipient_groups:
+    EMAILS_SEC: [user1@example.com, user2@example.mail.com]
+    # EMAILS_OPS: [user3@example.com, user3@example.com]

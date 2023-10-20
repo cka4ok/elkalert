@@ -2,14 +2,14 @@ from elasticsearch import Elasticsearch
 from datetime import datetime, timedelta
 
 class GetElastAlerts:
-    def __init__(self, hosts, index, protocol = 'http', username=None, password=None, verify_certs = False, ca_certs = None):
+    def __init__(self, hosts, index, protocol = 'http', username=None, password=None, ca_certs = None):
         assert protocol == 'http' or protocol == 'https'
         self.hosts = hosts
         self.index = index
         self.protocol = protocol
         self.username = username
         self.password = password
-        self.verify_certs = verify_certs
+        self.verify_certs = ca_certs is not None
         self.ca_certs = ca_certs
         self.time_last = datetime.utcnow() - timedelta(0,5)
     
@@ -20,7 +20,7 @@ class GetElastAlerts:
             "bool": {
                 "filter":
                 [
-                    {"range": { "timestamp": { 
+                    {"range": { "@timestamp": { 
                         "gte": time_start.strftime('%Y-%m-%dT%H:%M:%S'), 
                         "lte": time_end.strftime('%Y-%m-%dT%H:%M:%S') } } }
                 ]
