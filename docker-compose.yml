@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    restart: unless-stopped
+    networks:
+      - elkalert
+
+networks:
+  elkalert:
+    driver: bridge
+    
