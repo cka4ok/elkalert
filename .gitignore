@@ -148,3 +148,5 @@ dmypy.json
 # Current Project
 config.yml
 private/
+certs/*
+!certs/.gitkeep

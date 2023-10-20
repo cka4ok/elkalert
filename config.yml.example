@@ -4,7 +4,7 @@ global:
 elasticsearch:
   hosts: ["elasticsearch:9200"]  # or ["192.168.3.10:9200","192.168.3.11:9200"], do not specify a prefix http:// and https://
   protocol: https  #http or https
-  ca_certs: private/elasticsearch-ca.pem
+  ca_certs: certs/elasticsearch-ca.pem
   username: elkalert_bot
   password: changeme
   index: kibana-alert-history-elkalert
