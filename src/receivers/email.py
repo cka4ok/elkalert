@@ -34,7 +34,7 @@ class SendEmails:
                 if email["subject"] and email["subject"] != "auto":
                     msg_subject = email["subject"]
                 else:
-                    msg_subject = alert["rule"]["name"]
+                    msg_subject = alert["kibana"]["alert"]["actionGroupName"] + ": " + alert["rule"]["name"]
 
                 if email["body"] and email["body"] != "auto":
                     msg_body = email["body"] 
